@@ -1,0 +1,33 @@
+# src/config.py
+
+START_DATE = "2010-01-01"
+
+TARGET_HORIZON_DAYS = 5
+TARGET_RETURN_THRESHOLD = 0.015
+
+CONFIDENCE_THRESHOLDS = [0.55, 0.60, 0.65]
+META_THRESHOLD_GRID = [0.60, 0.65, 0.70, 0.75]
+META_MIN_TRADES = 20
+
+RAW_TABLE_NAME = "p2_market_raw_universe"
+FEATURE_TABLE_NAME = "p2_market_feature_store"
+ML_DATASET_TABLE_NAME = "p2_ml_dataset"
+
+MODEL_METRICS_TABLE_NAME = "p2_model_metrics"
+MODEL_PREDICTIONS_TABLE_NAME = "p2_model_predictions"
+FEATURE_IMPORTANCE_TABLE_NAME = "p2_feature_importance"
+BASELINE_COMPARE_TABLE_NAME = "p2_baseline_compare"
+
+EVAL_BY_STOCK_TABLE_NAME = "p2_eval_by_stock"
+EVAL_BY_TIME_TABLE_NAME = "p2_eval_by_time"
+EVAL_BY_CONFIDENCE_TABLE_NAME = "p2_eval_by_confidence"
+EVAL_CONFIDENCE_BY_STOCK_TABLE_NAME = "p2_eval_confidence_by_stock"
+
+BACKTEST_SUMMARY_TABLE_NAME = "p2_backtest_summary"
+BACKTEST_BY_STOCK_TABLE_NAME = "p2_backtest_by_stock"
+
+TRAIN_SPLIT_RATIO = 0.8
+ROLLING_TRAIN_YEARS = 8
+ROLLING_TEST_MONTHS = 6
+
+TOP_K_FEATURES = 30
