@@ -1,16 +1,16 @@
 # src/universe.py
 
-DEFAULT_UNIVERSE = [
+TRAIN_UNIVERSE = [
     "AAPL",
-    "MSFT",
-    "NVDA",
-    "AMZN",
-    "META",
-    "GOOGL",
-    "TSLA",
-    "AMD",
-    "NFLX",
-    "INTC"
+    # "NVDA",
+    # "MSFT",
+    # "GOOGL",
+    # "AMZN",
+    # "AMD",
+    # "TSLA",
+    # "META",
+    # "INTC",
+    # "NFLX",
 ]
 
 MARKET_CONTEXT = [
@@ -19,7 +19,7 @@ MARKET_CONTEXT = [
     "GLD",
     "TLT",
     "^VIX",
-    "USO"
+    "USO",
 ]
 
-ALL_SYMBOLS = DEFAULT_UNIVERSE + MARKET_CONTEXT
+ALL_SYMBOLS = TRAIN_UNIVERSE + MARKET_CONTEXT

@@ -12,6 +12,24 @@ class FeatureEngineer:
     universe: List[str]
     market_context: List[str]
 
+    def merge_news_features(
+        self,
+        features_df: pd.DataFrame,
+        news_features_df: pd.DataFrame) -> pd.DataFrame:
+        out = features_df.copy()
+        out["Date"] = pd.to_datetime(out["Date"], utc=True).dt.normalize()
+
+        news_df = news_features_df.copy()
+        news_df["Date"] = pd.to_datetime(news_df["Date"], utc=True).dt.normalize()
+
+        out = out.merge(news_df, on=["Date", "Ticker"], how="left")
+
+        news_cols = [c for c in news_df.columns if c not in ["Date", "Ticker"]]
+        for col in news_cols:
+            out[col] = out[col].fillna(0.0)
+
+        return out
+
     def build_stock_specific_feature_store(self, raw_df: pd.DataFrame) -> pd.DataFrame:
         """
         Build one wide dataframe per stock, matching the old AAPL-style architecture,
