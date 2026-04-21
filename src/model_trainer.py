@@ -7,8 +7,7 @@ from typing import List, Tuple, Dict, Any
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 from xgboost import XGBClassifier
-
-
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 @dataclass
 class ModelTrainer:
     random_state: int = 42
@@ -60,6 +59,8 @@ class ModelTrainer:
         y_train: pd.Series
     ) -> XGBClassifier:
         model = XGBClassifier(
+            random_state=self.random_state,
+            seed=self.random_state,
             n_estimators=250,
             max_depth=2,
             learning_rate=0.02,
@@ -68,13 +69,49 @@ class ModelTrainer:
             reg_lambda=8,
             reg_alpha=3,
             min_child_weight=8,
-            random_state=self.random_state,
             objective="binary:logistic",
             eval_metric="logloss"
         )
         model.fit(X_train, y_train)
         return model
+    def tune_xgboost(
+        self,
+        X_train: pd.DataFrame,
+        y_train: pd.Series,
+        n_splits: int = 3
+    ):
+        param_grid = {
+            "n_estimators": [150, 250],
+            "max_depth": [2, 3, 4],
+            "learning_rate": [0.02, 0.05],
+            "subsample": [0.7, 0.9],
+            "colsample_bytree": [0.6, 0.8],
+            "min_child_weight": [5, 8]
+        }
 
+        base_model = XGBClassifier(
+            random_state=self.random_state,
+            seed=self.random_state,
+            objective="binary:logistic",
+            eval_metric="logloss",
+            reg_lambda=8,
+            reg_alpha=3
+        )
+
+        tscv = TimeSeriesSplit(n_splits=n_splits)
+
+        grid = GridSearchCV(
+            estimator=base_model,
+            param_grid=param_grid,
+            scoring="roc_auc",
+            cv=tscv,
+            n_jobs=-1,
+            verbose=1
+        )
+
+        grid.fit(X_train, y_train)
+
+        return grid.best_estimator_, grid.best_params_, grid.best_score_
     def select_top_features(
         self,
         model: XGBClassifier,

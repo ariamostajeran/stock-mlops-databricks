@@ -20,7 +20,7 @@ class NewsFeatureBuilder:
         if missing:
             raise ValueError(f"Missing required news columns: {missing}")
 
-        df["Date"] = pd.to_datetime(df["Date"], errors="coerce", utc=True).dt.normalize()
+        df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.normalize()
         df["Ticker"] = df["Ticker"].astype(str).str.upper()
         df["headline"] = df["headline"].fillna("").astype(str)
 
@@ -32,7 +32,6 @@ class NewsFeatureBuilder:
             df["source"] = "unknown"
         df["source"] = df["source"].fillna("unknown").astype(str)
 
-        # Optional sentiment columns
         optional_numeric = [
             "headline_sentiment",
             "summary_sentiment",
@@ -98,6 +97,10 @@ class NewsFeatureBuilder:
 
             sub["abnormal_news_count_20d"] = (
                 sub["news_count_1d"] / (sub["news_count_1d"].rolling(20).mean() + 1e-9)
+            )
+
+            sub["sentiment_shock_5d"] = (
+                sub["combined_sentiment_mean_1d"] - sub["combined_sentiment_mean_5d"]
             )
 
             all_frames.append(sub)

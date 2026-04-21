@@ -2,15 +2,8 @@
 
 TRAIN_UNIVERSE = [
     "AAPL",
-    # "NVDA",
-    # "MSFT",
-    # "GOOGL",
-    # "AMZN",
-    # "AMD",
-    # "TSLA",
-    # "META",
-    # "INTC",
-    # "NFLX",
+    "TSLA",
+    "MSFT",
 ]
 
 MARKET_CONTEXT = [
